@@ -9,7 +9,6 @@ body {
     margin: 0;
     overflow: hidden;
     background-color: #000;
-    background-size: cover;
   }
   
   .star {
@@ -158,6 +157,7 @@ h2, label, p {
     margin-top: 10px;
 }
 
+
 /* Footer */
 
 footer {
@@ -183,39 +183,111 @@ footer .credits a {
 }
 
 
-/* Media queries de várias telas */
 
+/* Adicionando regras de mídia queries para tornar o layout responsivo */
 
-@media only screen and (max-width: 600px) {
+@media screen and (min-width: 400px) {
+
+    .app-logo img {
+        width: 120px; 
+        height: 60px; 
+    }
+
+    .app-bar .app-name {
+        font-size: 20px; 
+    }
+
     #weather-container {
-        max-width: 300px;
+        margin-top: 40px;
+        max-width: 74%; 
+        font-size: 10px;
     }
 
-    #weather-icon {
-        width: 150px;
-        height: 150px;
+    footer .credits {
+        margin-top: 10px;
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+
+    .app-logo img {
+        width: 120px; 
+        height: 60px; 
     }
 
-    #hourly-forecast {
+    .app-bar .app-name {
+        font-size: 20px; 
+    }
+
+    .weather-search {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between; 
+        align-items: center; 
+    }
+
+    .weather-search input {
+        width: 450px; 
+    }
+
+    #weather-container {
+        margin-top: 40px;
+        max-width: 74%; 
+        font-size: 10px;
+    }
+
+    footer .credits {
+        margin-top: 10px;
+        width: 60%;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+    
+}
+
+
+
+@media screen and (min-width: 992px) {
+
+    .app-logo img {
+        width: 150px; 
+        height: 75px; 
+    }
+
+    .app-bar .app-name {
+        font-size: 24px; 
+    }
+
+    .weather-search {
+        display: flex;
+        gap: 20px;
+        justify-content: center; 
+        align-items: center; 
+    }
+
+    .weather-search input {
+        max-width: 600px; 
+    }
+
+    #weather-container {
         margin-top: 20px;
+        max-width: 40%;
+        font-size: 10px;
+
     }
 
-    .hourly-item {
-        width: 60px;
-        margin-right: 5px;
+    footer .credits {
+        margin-top: 10px;
+        width: 40%;
     }
 }
 
-@media only screen and (max-width: 400px) {
-    #weather-container {
-        padding: 10px;
-    }
 
-    #temp-div p {
-        font-size: 40px;
-    }
 
-    #weather-info {
-        font-size: 16px;
-    }
-}
+   
+
