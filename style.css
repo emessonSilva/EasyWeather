@@ -403,6 +403,75 @@ footer .credits a {
     
 }
 
+@media screen and (min-width: 910px) {
+
+    .app-logo img {
+        margin-top: 40px;
+        width: 120px; 
+        height: 70px; 
+    }
+
+    .app-bar .app-name {
+        font-size: 20px; 
+    }
+
+    .weather-search input {
+        width: 500px; 
+        height: 60px;
+        font-size: 30px;
+    }
+
+    .weather-search input::placeholder {
+        font-size: 30px; 
+    }
+    
+    .weather-search button {
+        width: 200px; 
+        height: 50px; 
+    }
+
+    #weather-container {
+        margin-top: 50px;
+        max-width: 80%;
+    }
+
+    #weather-icon {
+        min-width: 40%;
+        height: 20%;
+    }
+
+    #weather-info  {
+        margin-bottom: 5%;
+    }
+
+    #weather-info p {
+        font-size: 40px;
+    }
+
+    #temp-div p {
+        margin-top: 1px;
+        font-size: 60px;
+    }
+
+    #hourly-forecast .hourly-item span {
+        font-size: 25px;
+    }
+
+    #hourly-forecast .hourly-item img {
+        width: 100px;
+        height: 100px;
+    }
+
+    footer .credits {
+        display: flex;
+        flex-direction: row;
+        font-size: 20px;
+        width: 60%;
+    }   
+
+}
+
+
 @media screen and (min-width: 992px) {
 
     .app-logo img {
