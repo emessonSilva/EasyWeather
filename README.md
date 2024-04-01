@@ -8,7 +8,7 @@ EasyWeather is a simple weather web application that allows users to check curre
 - Display of current temperature and weather condition for the searched location.
 - Hourly forecast provided for the searched city.
 - Minimalist design with an app logo and name in the app bar.
-- Credits section in the footer, acknowledging the designer.
+- Credits section in the footer, acknowledging the developer.
 
 ## Usage
 
@@ -18,7 +18,7 @@ EasyWeather is a simple weather web application that allows users to check curre
 
 ## Credits
 
-Designed by [Emesson Silva](https://github.com/emessonSilva/).
+Developed by [Emesson Silva](https://github.com/emessonSilva/).
 
 ## Technologies Used
 
@@ -29,6 +29,6 @@ Designed by [Emesson Silva](https://github.com/emessonSilva/).
 
 ## Demo
 
-Click [here](https://emessonsilva.github.io/EasyWeather/) to view it.
+Click [here](https://emessonsilva.github.io/EasyWeather/) to try it.
 
 
