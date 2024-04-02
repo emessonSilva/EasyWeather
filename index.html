@@ -7,6 +7,12 @@
     <link rel="icon" type="image/png" href="./assets/webapp-logo.png">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="style.css">
+
+    <script>
+        if (typeof navigator.serviceWorker !== 'undefined') {
+            navigator.serviceWorker.register('pwabuilder-sw.js')
+        }
+    </script>
 </head>
 <body>
     

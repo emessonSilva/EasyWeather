@@ -142,10 +142,10 @@
       "src": "assets/icons/ios/1024.png",
       "sizes": "1024x1024"
     }
-    
   ],
   "lang": "en",
   "categories": [
     "weather"
-  ]
+  ],
+  "description": "EasyWeather is a simple weather web application that allows users to check current weather conditions by city name."
 }
