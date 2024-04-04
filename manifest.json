@@ -12,7 +12,8 @@
     {
       "src": "./assets/webapp-logo.png",
       "type": "image/png",
-      "sizes": "1280x594"
+      "sizes": "1280x594",
+      "purpose": "maskable"
     },
     {
       "src": "assets/icons/windows11/SmallTile.scale-100.png",
