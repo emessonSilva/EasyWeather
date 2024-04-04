@@ -184,7 +184,7 @@ footer .credits a {
 
 
 
-/* Adicionando regras de mídia queries para tornar o layout responsivo */
+/* media queries */
 
 @media screen and (max-width: 300px) {
 
