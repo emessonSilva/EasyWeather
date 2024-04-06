@@ -1,47 +1,79 @@
-// This is the "Offline page" service worker
+const cacheName = "pwabuilder-page";
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+self.addEventListener('install', event => {
 
-const CACHE = "pwabuilder-page";
+  self.skipWaiting();
 
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const offlineFallbackPage = "offline.html";
+  event.waitUntil(
+    caches.open(cacheName)
+      .then(cache => cache.addAll([
 
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+        './index.html',
+
+        './assets/webapp-logo.avif',
+
+        './assets/icons/android/android-launchericon-48-48.png',
+        './assets/icons/android/android-launchericon-72-72.png',
+        './assets/icons/android/android-launchericon-96-96.png',
+        './assets/icons/android/android-launchericon-144-144.png',
+        './assets/icons/android/android-launchericon-192-192.png',
+        './assets/icons/android/android-launchericon-512-512.png',
+
+        './assets/icons/ios/16.png',
+        './assets/icons/ios/20.png',
+        './assets/icons/ios/29.png',
+        './assets/icons/ios/32.png',
+        './assets/icons/ios/40.png',
+        './assets/icons/ios/50.png',
+        './assets/icons/ios/57.png',
+        './assets/icons/ios/58.png',
+        './assets/icons/ios/60.png',
+        './assets/icons/ios/64.png',
+        './assets/icons/ios/72.png',
+        './assets/icons/ios/76.png',
+        './assets/icons/ios/80.png',
+        './assets/icons/ios/87.png',
+        './assets/icons/ios/100.png',
+        './assets/icons/ios/114.png',
+        './assets/icons/ios/120.png',
+        './assets/icons/ios/128.png',
+        './assets/icons/ios/128.png',
+        './assets/icons/ios/167.png',
+        './assets/icons/ios/180.png',
+        './assets/icons/ios/192.png',
+        './assets/icons/ios/256.png',
+        './assets/icons/ios/512.png',
+        './assets/icons/ios/1024.png'
+        
+      ]))
+  );
+});
+
+self.addEventListener('message', function (event) {
+  if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
   }
 });
 
-self.addEventListener('install', async (event) => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then((cache) => cache.add(offlineFallbackPage))
-  );
-});
+self.addEventListener('fetch', function (event) {
+  //Atualizacao internet
+  event.respondWith(async function () {
+    try {
+      return await fetch(event.request);
+    } catch (err) {
+      return caches.match(event.request);
+    }
+  }());
 
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResp = await event.preloadResponse;
-
-        if (preloadResp) {
-          return preloadResp;
+  //Atualizacao cache
+  event.respondWith(
+    caches.match(event.request)
+      .then(function (response) {
+        if (response) {
+          return response;
         }
+        return fetch(event.request);
+      })
+  );
 
-        const networkResp = await fetch(event.request);
-        return networkResp;
-      } catch (error) {
-
-        const cache = await caches.open(CACHE);
-        const cachedResp = await cache.match(offlineFallbackPage);
-        return cachedResp;
-      }
-    })());
-  }
 });
