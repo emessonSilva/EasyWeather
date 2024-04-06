@@ -29,6 +29,6 @@ Developed by [Emesson Silva](https://github.com/emessonSilva/).
 
 ## Demo
 
-Click [here](https://emessonsilva.github.io/EasyWeather/) to try it.
+Try it out: https://easy-weather0.netlify.app/
 
 
