@@ -1,47 +1,54 @@
-// This is the "Offline page" service worker
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+const cacheName = "pwabuilder-page";
 
-const cache = "pwabuilder-page";
+self.addEventListener('install', event => {
 
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const offlineFallbackPage = "offline.html";
+  self.skipWaiting();
 
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
+  event.waitUntil(
+    caches.open(cacheName)
+      .then(cache => cache.addAll([
+
+        './index.html',
+        './style.css',
+        
+        './assets/webapp-logo.avif',
+        './assets/icons/android/android-launchericon-48-48.png',
+        './assets/icons/android/android-launchericon-72-72.png',
+        './assets/icons/android/android-launchericon-96-96.png',
+        './assets/icons/android/android-launchericon-144-144.png',
+        './assets/icons/android/android-launchericon-512-512.png',
+        './assets/icons/android/android-launchericon-512-512.png'
+
+      ]))
+  );
+});
+
+self.addEventListener('message', function (event) {
+  if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
   }
 });
 
-self.addEventListener('install', async (event) => {
-  event.waitUntil(
-    caches.open(cache)
-      .then((cache) => cache.add(offlineFallbackPage))
-  );
-});
+self.addEventListener('fetch', function (event) {
+  //Atualizacao internet
+  event.respondWith(async function () {
+    try {
+      return await fetch(event.request);
+    } catch (err) {
+      return caches.match(event.request);
+    }
+  }());
 
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResp = await event.preloadResponse;
-
-        if (preloadResp) {
-          return preloadResp;
+  //Atualizacao cache
+  /*event.respondWith(
+    caches.match(event.request)
+      .then(function (response) {
+        if (response) {
+          return response;
         }
+        return fetch(event.request);
+      })
+  );*/
 
-        const networkResp = await fetch(event.request);
-        return networkResp;
-      } catch (error) {
-
-        const cache = await caches.open(cache);
-        const cachedResp = await cache.match(offlineFallbackPage);
-        return cachedResp;
-      }
-    })());
-  }
 });
