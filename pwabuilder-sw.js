@@ -1,144 +1,47 @@
+// This is the "Offline page" service worker
 
-// self.addEventListener('install', event => {
-//   self.skipWaiting();
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 
-//   event.waitUntil(
-//     caches.open(cacheName)
-//       .then(cache => {
-//         return cache.addAll([
-//           './index.html',
-//           './style.css',
-//           './script.js',
-//           './assets/webapp-logo.avif',
-//           './assets/icons/android/android-launchericon-48-48.png',
-//           './assets/icons/android/android-launchericon-72-72.png',
-//           './assets/icons/android/android-launchericon-96-96.png',
-//           './assets/icons/android/android-launchericon-144-144.png',
-//           './assets/icons/android/android-launchericon-192-192.png',
-//           './assets/icons/android/android-launchericon-512-512.png',
-//           './assets/icons/ios/16.png',
-//           './assets/icons/ios/20.png',
-//           './assets/icons/ios/29.png',
-//           './assets/icons/ios/32.png',
-//           './assets/icons/ios/40.png',
-//           './assets/icons/ios/50.png',
-//           './assets/icons/ios/57.png',
-//           './assets/icons/ios/58.png',
-//           './assets/icons/ios/60.png',
-//           './assets/icons/ios/64.png',
-//           './assets/icons/ios/72.png',
-//           './assets/icons/ios/76.png',
-//           './assets/icons/ios/80.png',
-//           './assets/icons/ios/87.png',
-//           './assets/icons/ios/100.png',
-//           './assets/icons/ios/114.png',
-//           './assets/icons/ios/120.png',
-//           './assets/icons/ios/128.png',
-//           './assets/icons/ios/167.png',
-//           './assets/icons/ios/180.png',
-//           './assets/icons/ios/192.png',
-//           './assets/icons/ios/256.png',
-//           './assets/icons/ios/512.png',
-//           './assets/icons/ios/1024.png'
-//         ]);
-//       })
-//   );
-// });
+const cache = "pwabuilder-page";
 
-// self.addEventListener('activate', event => {
-//   event.waitUntil(self.clients.claim());
-// });
+// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
+const offlineFallbackPage = "offline.html";
 
-// self.addEventListener('fetch', event => {
-//   event.respondWith(
-//     caches.match(event.request)
-//       .then(response => {
-//         return response || fetch(event.request);
-//       })
-//       .catch(error => {
-//         console.error('Error in fetching:', error);
-//       })
-//   );
-// });
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
 
+self.addEventListener('install', async (event) => {
+  event.waitUntil(
+    caches.open(cache)
+      .then((cache) => cache.add(offlineFallbackPage))
+  );
+});
 
-
-const cacheName = "pwabuilder-page";
-
-self.addEventListener('install', function(event){
-    event.waitUntil(
-        caches.open(cacheName).then(function (cache){
-            cache.addAll([
-              './index.html',
-              './style.css',
-              './script.js',
-              './assets/webapp-logo.avif',
-              './assets/icons/android/android-launchericon-48-48.png',
-              './assets/icons/android/android-launchericon-72-72.png',
-              './assets/icons/android/android-launchericon-96-96.png',
-              './assets/icons/android/android-launchericon-144-144.png',
-              './assets/icons/android/android-launchericon-192-192.png',
-              './assets/icons/android/android-launchericon-512-512.png',
-              './assets/icons/ios/16.png',
-              './assets/icons/ios/20.png',
-              './assets/icons/ios/29.png',
-              './assets/icons/ios/32.png',
-              './assets/icons/ios/40.png',
-              './assets/icons/ios/50.png',
-              './assets/icons/ios/57.png',
-              './assets/icons/ios/58.png',
-              './assets/icons/ios/60.png',
-              './assets/icons/ios/64.png',
-              './assets/icons/ios/72.png',
-              './assets/icons/ios/76.png',
-              './assets/icons/ios/80.png',
-              './assets/icons/ios/87.png',
-              './assets/icons/ios/100.png',
-              './assets/icons/ios/114.png',
-              './assets/icons/ios/120.png',
-              './assets/icons/ios/128.png',
-              './assets/icons/ios/167.png',
-              './assets/icons/ios/180.png',
-              './assets/icons/ios/192.png',
-              './assets/icons/ios/256.png',
-              './assets/icons/ios/512.png',
-              './assets/icons/ios/1024.png'
-            ])
-        })
-    )
-    return self.skipWaiting()
-})
-
-self.addEventListener('activate', e =>{
-    self.clients.claim()
-})
-
-self.addEventListener('fetch', async e =>{
-    const req = e.request
-    const url = new URL(req.url)
-
-    if(url.origin === location.origin){
-        e.respondWith(cacheFirst(req))
-    } else{
-        e.respondWith(networkAndCache(req))
-    }
-})
-
-async function cacheFirst(req){
-    const cache = await caches.open(cacheName)
-    const cached = await cache.match(req)
-
-    return cached || fetch(req)
+if (workbox.navigationPreload.isSupported()) {
+  workbox.navigationPreload.enable();
 }
 
-async function networkAndCache(req){
-    const cache = await caches.open(cacheName);
-    try{
-        const refresh = await fetch(req)
-        await cache.put(req, fresh.clone())
-        return refresh
-    } catch(e){
-        const cached = await cache.match(req);
-        return cached
-    }
-}
+self.addEventListener('fetch', (event) => {
+  if (event.request.mode === 'navigate') {
+    event.respondWith((async () => {
+      try {
+        const preloadResp = await event.preloadResponse;
+
+        if (preloadResp) {
+          return preloadResp;
+        }
+
+        const networkResp = await fetch(event.request);
+        return networkResp;
+      } catch (error) {
+
+        const cache = await caches.open(cache);
+        const cachedResp = await cache.match(offlineFallbackPage);
+        return cachedResp;
+      }
+    })());
+  }
+});
