@@ -12,7 +12,24 @@
     <link rel="stylesheet" href="style.css">
 
      
-    
+    <script>
+        let newWorker;
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./pwabuilder-sw.js').then(reg => {
+                    reg.addEventListener('updatefound', () => {
+                        newWorker = reg.installing;
+                    });
+                });
+            });
+            let refreshing;
+            navigator.serviceWorker.addEventListener('controllerchange', function () {
+                if (refreshing) return;
+                window.location.reload();
+                refreshing = true;
+            });
+        }
+    </script>https://emessonsilva.github.io/EasyWeather/
 
 </head>
 <body>
@@ -58,26 +75,9 @@
     </footer>
 
 
-    <script src="script.js"></script>
+    <script src="scipt.js"></script>
 
-    <script>
-        let newWorker;
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./pwabuilder-sw.js').then(reg => {
-                    reg.addEventListener('updatefound', () => {
-                        newWorker = reg.installing;
-                    });
-                });
-            });
-            let refreshing;
-            navigator.serviceWorker.addEventListener('controllerchange', function () {
-                if (refreshing) return;
-                window.location.reload();
-                refreshing = true;
-            });
-        }
-    </script>
+   
 
 </body>
 </html>
