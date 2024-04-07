@@ -1,5 +1,5 @@
 
-const cacheName = "pwabuilder-page";
+const cacheName = "sw-page";
 
 self.addEventListener('install', event => {
 
