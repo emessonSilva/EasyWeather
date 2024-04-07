@@ -11,11 +11,6 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="style.css">
 
-    <script>
-        if (typeof navigator.serviceWorker !== 'undefined') {
-            navigator.serviceWorker.register('pwabuilder-sw.js')
-        }
-    </script>
 </head>
 <body>
     
@@ -62,5 +57,23 @@
 
     <script src="scipt.js"></script>
 
+    
+<script>
+    let newWorker;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/pwabuilder-sw.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+          newWorker = reg.installing;
+        });
+      });
+      let refreshing;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
+      });
+    }
+  </script>
+  
 </body>
 </html>
