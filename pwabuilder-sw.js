@@ -1,61 +1,144 @@
+
+// self.addEventListener('install', event => {
+//   self.skipWaiting();
+
+//   event.waitUntil(
+//     caches.open(cacheName)
+//       .then(cache => {
+//         return cache.addAll([
+//           './index.html',
+//           './style.css',
+//           './script.js',
+//           './assets/webapp-logo.avif',
+//           './assets/icons/android/android-launchericon-48-48.png',
+//           './assets/icons/android/android-launchericon-72-72.png',
+//           './assets/icons/android/android-launchericon-96-96.png',
+//           './assets/icons/android/android-launchericon-144-144.png',
+//           './assets/icons/android/android-launchericon-192-192.png',
+//           './assets/icons/android/android-launchericon-512-512.png',
+//           './assets/icons/ios/16.png',
+//           './assets/icons/ios/20.png',
+//           './assets/icons/ios/29.png',
+//           './assets/icons/ios/32.png',
+//           './assets/icons/ios/40.png',
+//           './assets/icons/ios/50.png',
+//           './assets/icons/ios/57.png',
+//           './assets/icons/ios/58.png',
+//           './assets/icons/ios/60.png',
+//           './assets/icons/ios/64.png',
+//           './assets/icons/ios/72.png',
+//           './assets/icons/ios/76.png',
+//           './assets/icons/ios/80.png',
+//           './assets/icons/ios/87.png',
+//           './assets/icons/ios/100.png',
+//           './assets/icons/ios/114.png',
+//           './assets/icons/ios/120.png',
+//           './assets/icons/ios/128.png',
+//           './assets/icons/ios/167.png',
+//           './assets/icons/ios/180.png',
+//           './assets/icons/ios/192.png',
+//           './assets/icons/ios/256.png',
+//           './assets/icons/ios/512.png',
+//           './assets/icons/ios/1024.png'
+//         ]);
+//       })
+//   );
+// });
+
+// self.addEventListener('activate', event => {
+//   event.waitUntil(self.clients.claim());
+// });
+
+// self.addEventListener('fetch', event => {
+//   event.respondWith(
+//     caches.match(event.request)
+//       .then(response => {
+//         return response || fetch(event.request);
+//       })
+//       .catch(error => {
+//         console.error('Error in fetching:', error);
+//       })
+//   );
+// });
+
+
+
 const cacheName = "pwabuilder-page";
 
-self.addEventListener('install', event => {
-  self.skipWaiting();
+self.addEventListener('install', function(event){
+    event.waitUntil(
+        caches.open(cacheName).then(function (cache){
+            cache.addAll([
+              './index.html',
+              './style.css',
+              './script.js',
+              './assets/webapp-logo.avif',
+              './assets/icons/android/android-launchericon-48-48.png',
+              './assets/icons/android/android-launchericon-72-72.png',
+              './assets/icons/android/android-launchericon-96-96.png',
+              './assets/icons/android/android-launchericon-144-144.png',
+              './assets/icons/android/android-launchericon-192-192.png',
+              './assets/icons/android/android-launchericon-512-512.png',
+              './assets/icons/ios/16.png',
+              './assets/icons/ios/20.png',
+              './assets/icons/ios/29.png',
+              './assets/icons/ios/32.png',
+              './assets/icons/ios/40.png',
+              './assets/icons/ios/50.png',
+              './assets/icons/ios/57.png',
+              './assets/icons/ios/58.png',
+              './assets/icons/ios/60.png',
+              './assets/icons/ios/64.png',
+              './assets/icons/ios/72.png',
+              './assets/icons/ios/76.png',
+              './assets/icons/ios/80.png',
+              './assets/icons/ios/87.png',
+              './assets/icons/ios/100.png',
+              './assets/icons/ios/114.png',
+              './assets/icons/ios/120.png',
+              './assets/icons/ios/128.png',
+              './assets/icons/ios/167.png',
+              './assets/icons/ios/180.png',
+              './assets/icons/ios/192.png',
+              './assets/icons/ios/256.png',
+              './assets/icons/ios/512.png',
+              './assets/icons/ios/1024.png'
+            ])
+        })
+    )
+    return self.skipWaiting()
+})
 
-  event.waitUntil(
-    caches.open(cacheName)
-      .then(cache => {
-        return cache.addAll([
-          './index.html',
-          './assets/webapp-logo.avif',
-          './assets/icons/android/android-launchericon-48-48.png',
-          './assets/icons/android/android-launchericon-72-72.png',
-          './assets/icons/android/android-launchericon-96-96.png',
-          './assets/icons/android/android-launchericon-144-144.png',
-          './assets/icons/android/android-launchericon-192-192.png',
-          './assets/icons/android/android-launchericon-512-512.png',
-          './assets/icons/ios/16.png',
-          './assets/icons/ios/20.png',
-          './assets/icons/ios/29.png',
-          './assets/icons/ios/32.png',
-          './assets/icons/ios/40.png',
-          './assets/icons/ios/50.png',
-          './assets/icons/ios/57.png',
-          './assets/icons/ios/58.png',
-          './assets/icons/ios/60.png',
-          './assets/icons/ios/64.png',
-          './assets/icons/ios/72.png',
-          './assets/icons/ios/76.png',
-          './assets/icons/ios/80.png',
-          './assets/icons/ios/87.png',
-          './assets/icons/ios/100.png',
-          './assets/icons/ios/114.png',
-          './assets/icons/ios/120.png',
-          './assets/icons/ios/128.png',
-          './assets/icons/ios/167.png',
-          './assets/icons/ios/180.png',
-          './assets/icons/ios/192.png',
-          './assets/icons/ios/256.png',
-          './assets/icons/ios/512.png',
-          './assets/icons/ios/1024.png'
-        ]);
-      })
-  );
-});
+self.addEventListener('activate', e =>{
+    self.clients.claim()
+})
 
-self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
-});
+self.addEventListener('fetch', async e =>{
+    const req = e.request
+    const url = new URL(req.url)
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
-      .catch(error => {
-        console.error('Error in fetching:', error);
-      })
-  );
-});
+    if(url.origin === location.origin){
+        e.respondWith(cacheFirst(req))
+    } else{
+        e.respondWith(networkAndCache(req))
+    }
+})
+
+async function cacheFirst(req){
+    const cache = await caches.open(cacheName)
+    const cached = await cache.match(req)
+
+    return cached || fetch(req)
+}
+
+async function networkAndCache(req){
+    const cache = await caches.open(cacheName);
+    try{
+        const refresh = await fetch(req)
+        await cache.put(req, fresh.clone())
+        return refresh
+    } catch(e){
+        const cached = await cache.match(req);
+        return cached
+    }
+}
