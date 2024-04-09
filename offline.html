@@ -37,14 +37,7 @@
     </div>
 
     <div id="weather-container">
-    
-            <img id="weather-icon" alt="Weather Icon">
-    
-            <div id="temp-div"></div>
-    
-            <div id="weather-info"></div>
-    
-            <div id="hourly-forecast"></div>
+        <h2>Connect to internet</h2>
     </div>
 
     <footer>
@@ -56,23 +49,6 @@
 
     <script src="script.js"></script>
 
-    
-  <script>
-    let newWorker;
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').then(reg => {
-        reg.addEventListener('updatefound', () => {
-          newWorker = reg.installing;
-        });
-      });
-      let refreshing;
-      navigator.serviceWorker.addEventListener('controllerchange', function () {
-        if (refreshing) return;
-        window.location.reload();
-        refreshing = true;
-      });
-    }
-  </script>
 
 </body>
 </html>
