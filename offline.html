@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EasyWeather</title>
+    <meta name="theme-color" content="#0179fc"/>
+    <meta name="description" content="Author: Emesson Silva
+     Category: Weather">
+    <link rel="icon" type="image/png" href="./assets/webapp-logo.avif">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="app-bar">
+        <div class="app-logo">
+            <img src="./assets/webapp-logo.avif" alt="logo do app">
+        </div>
+        <div class="app-name">
+            <h4>EasyWeather</h4>
+        </div>
+    </div>
+   
+
+    <div class="weather-search">
+
+        <input type="text" id="city" placeholder="Enter city">
+
+        <button onclick="getWeather()" aria-label="Buscar Tempo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>   
+        </button>
+        
+
+    </div>
+
+    <div id="weather-container">
+    
+            <img id="weather-icon" alt="Weather Icon">
+    
+            <div id="temp-div"></div>
+    
+            <div id="weather-info"></div>
+    
+            <div id="hourly-forecast"></div>
+    </div>
+
+    <footer>
+        <div class="credits">
+            Developed by <a href="https://github.com/emessonSilva/">Emesson Silva</a>
+        </div>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+    
+  <script>
+    let newWorker;
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+          newWorker = reg.installing;
+        });
+      });
+      let refreshing;
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
+      });
+    }
+  </script>
+
+</body>
+</html>
