@@ -7,7 +7,6 @@ self.addEventListener('install', event => {
     caches.open(cacheName)
       .then(cache => {
         return cache.addAll([
-          './offline.html',
           './index.html',
           './style.css',
           './assets/webapp-logo.avif',
